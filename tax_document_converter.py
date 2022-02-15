@@ -37,24 +37,24 @@ def convert_and_copy():
     custodian_name = "Custodian: Custodian Name"
     household_id = "Source System ID"
 
-    cols = cpa_cols + [client_col] + [acct_num_col] + [custodian_name] + [household_id]
+    cols = cpa_cols + [client_col, acct_num_col, custodian_name, household_id]
+
+    # Mapping data for financial account number to household number
+    account_to_household_key = "Financial Account Name"
+    account_to_household_value = "Source System ID"
+    household_prefix = "Household-"
+    mapping_cols = [account_to_household_key, account_to_household_value]
+
+    all_cols = cols + mapping_cols
+
     cpa_file = input(
         "Please provide the full path and file name to the CPA Tax Spreadsheet"
     )
-    df = pd.read_excel(cpa_file, skiprows=11, usecols=cols)
+    df = pd.read_csv(cpa_file, encoding="cp1252")[all_cols]
     df = df[df[custodian_name] == "Charles Schwab & Co."]
 
-    # Mapping data for financial account number to household number 
-    account_to_household_key = "Financial Account: Financial Account Name"
-    account_to_household_value = "Household: Source System ID"
-    household_prefix = "Household-"
-    household_mapping_file = input(
-        "Please provide the full path and file name to the "
-        "Financial Accounts Household ID file"
-    )
-    mapping_cols = [account_to_household_key, account_to_household_value]
-    household_mapping = pd.read_excel(
-        household_mapping_file, skiprows=9, usecols=mapping_cols)
+    # Mapping data for financial account number to household number
+    household_mapping = df[mapping_cols].copy()
     household_mapping = household_mapping.set_index(
         account_to_household_key
     ).to_dict()[account_to_household_value]
@@ -94,3 +94,4 @@ def convert_and_copy():
     
 if __name__ == "__main__":
     convert_and_copy()
+    
