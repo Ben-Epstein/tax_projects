@@ -40,9 +40,10 @@ def convert_and_copy():
     )
 
     must_be_pdf = True
-    all_files = os.listdir(file_loc)
+    all_files = [f"{file_loc}/{file}" for file in os.listdir(file_loc)]
     print(f"Found {len(all_files)} in {file_loc}:", all_files)
-    all_files = [file for file in os.listdir(file_loc) if os.path.isfile(file)]
+    all_files = [file for file in all_files if os.path.isfile(file)]
+    print(f"Validated {len(all_files)} remaining:", all_files)
 
     if must_be_pdf:
         all_files = [file for file in all_files if file.endswith("pdf")]
