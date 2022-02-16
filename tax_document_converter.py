@@ -101,40 +101,41 @@ def convert_and_copy():
 
     # Structure is 1234-5678_rest_of_name.pdf
     # First 8 digits are account #, first 4 must be redacted
-    try:
-        cleaned_files = []
-        for file in tqdm(all_files):
+    cleaned_files = []
+    failed_files = {}
+    for file in tqdm(all_files):
+        try:
             acct_number, *rest_of_file = file.split("_")
             acct_number = acct_number.replace("-", "")
             rest_of_file = "_".join(rest_of_file)
             redacted_acct_number = "X" * 4 + acct_number[4:]
-
+    
             df_for_acct = df[df[acct_num_col] == acct_number]
-            print(f"Row for account {acct_number}")
-            print(df_for_acct)
             client = df_for_acct[client_col].values[0]
-            print(f"Found client {client}")
-
+    
             file_name = f"{client}_{redacted_acct_number}_{rest_of_file}"
-            cleaned_files.append(file_name)
-
+    
             household_id = household_mapping[acct_number]
-            print(f"Checking for household ID {household_id}")
             for client_dir in all_clients:
                 if str(household_id) in str(client_dir):
                     # This is the right client. Write the file
                     input_file = PureWindowsPath(file_loc) / file
                     output_file = PureWindowsPath(client_dir) / file_name
-                    print(f"Copying file from {input_file} to {output_file}")
                     shutil.copyfile(input_file, output_file)
-    except Exception as e:
-        print(f"There was an issue processing the data: {e}")
-        sleep(10)
-        return
+                    cleaned_files.append(file_name)
+        except Exception as e:
+            failed_files[file] = str(e)
+            continue
+    return cleaned_files, failed_files
 
     
 if __name__ == "__main__":
-    convert_and_copy()
-    print("Done converting! This window will close automatically in 10 seconds")
-    sleep(10)
+    clean, failed = convert_and_copy()
+    print(f"Done converting {len(clean)} files!")
+    if failed:
+        print(f"The following {len(failed)} files failed to be processed:")
+        for f in failed:
+            print(f, "--", failed[f])
+    print("This window will close automatically in 20 seconds")
+    sleep(20)
     
