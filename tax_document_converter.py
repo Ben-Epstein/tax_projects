@@ -86,6 +86,8 @@ def convert_and_copy():
     household_mapping = household_mapping.set_index(
         account_to_household_key
     ).to_dict()[account_to_household_value]
+    # Grab the last 2-4 digits of the household ID
+    household_mapping = {k: str(v).split("-")[-1] for k, v in household_mapping.items()}
 
     # Clean up unicode char (\xa0)
     df = df.fillna("None")
@@ -116,23 +118,23 @@ def convert_and_copy():
             file_name = f"{client}_{redacted_acct_number}_{rest_of_file}"
             cleaned_files.append(file_name)
 
-            household_id = household_mapping[acct_number].lstrip(household_prefix)
+            household_id = household_mapping[acct_number]
             print(f"Checking for household ID {household_id}")
             for client_dir in all_clients:
-                if household_id in str(client_dir):
+                if str(household_id) in str(client_dir):
                     # This is the right client. Write the file
                     input_file = PureWindowsPath(file_loc) / file
                     output_file = PureWindowsPath(client_dir) / file_name
                     print(f"Copying file from {input_file} to {output_file}")
                     shutil.copyfile(input_file, output_file)
     except Exception as e:
-        print(f"There was an issue proccesing the data: {e}")
+        print(f"There was an issue processing the data: {e}")
         sleep(10)
         return
 
     
 if __name__ == "__main__":
     convert_and_copy()
-    print("Done converting! This window will close automatically in 5 seconds")
-    sleep(5)
+    print("Done converting! This window will close automatically in 10 seconds")
+    sleep(10)
     
