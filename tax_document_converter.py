@@ -21,6 +21,17 @@ def get_file():
         )
         print(e)
         get_file()
+       
+        
+def get_clients():
+    print("Inspecting client folders")
+    try:
+        all_clients = glob(f"{output_loc}/**/*{cur_year}/", recursive=True)
+        return all_clients
+    except Exception as e:
+        print(f"There was an issue inspecting the clients: {e}")
+        sleep(5)
+        raise
 
 
 def convert_and_copy():
@@ -81,7 +92,7 @@ def convert_and_copy():
 
     print(f"Processing {len(all_files)} files")
 
-    all_clients = glob(f"{output_loc}/**/*{cur_year}/", recursive=True)
+    all_clients = get_clients()
 
     # Structure is 1234-5678_rest_of_name.pdf
     # First 8 digits are account #, first 4 must be redacted
