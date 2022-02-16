@@ -5,6 +5,7 @@ import pandas as pd
 from tqdm import tqdm
 import shutil
 from glob import glob
+from time import sleep
 from pathlib import PureWindowsPath
 
 
@@ -23,7 +24,7 @@ def get_file():
         get_file()
        
         
-def get_clients():
+def get_clients(output_loc, cur_year):
     print("Inspecting client folders")
     try:
         all_clients = glob(f"{output_loc}/**/*{cur_year}/", recursive=True)
@@ -92,7 +93,7 @@ def convert_and_copy():
 
     print(f"Processing {len(all_files)} files")
 
-    all_clients = get_clients()
+    all_clients = get_clients(output_loc, cur_year)
 
     # Structure is 1234-5678_rest_of_name.pdf
     # First 8 digits are account #, first 4 must be redacted
