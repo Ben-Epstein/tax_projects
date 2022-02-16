@@ -8,6 +8,21 @@ from glob import glob
 from pathlib import PureWindowsPath
 
 
+def get_file():
+    cpa_file = PureWindowsPath(input(
+        "Please provide the full path and file name to the CPA Tax Spreadsheet"
+    ))
+    try:
+        df = pd.read_csv(cpa_file, encoding="cp1252")
+        return df
+    except Exception as e:
+        print(
+            "There was an issue opening the file. Let's try again. See error below",
+        )
+        print(e)
+        get_file()
+
+
 def convert_and_copy():
     file_loc = PureWindowsPath(
         input("Please provide the full path to the input files.")
@@ -25,6 +40,8 @@ def convert_and_copy():
     )
 
     must_be_pdf = True
+    all_files = os.listdir(file_loc)
+    print(f"Found {len(all_files)} in {file_loc}:", all_files)
     all_files = [file for file in os.listdir(file_loc) if os.path.isfile(file)]
 
     if must_be_pdf:
@@ -40,17 +57,14 @@ def convert_and_copy():
     cols = cpa_cols + [client_col, acct_num_col, custodian_name, household_id]
 
     # Mapping data for financial account number to household number
-    account_to_household_key = "Financial Account Name"
+    account_to_household_key = acct_num_col
     account_to_household_value = "Source System ID"
     household_prefix = "Household-"
     mapping_cols = [account_to_household_key, account_to_household_value]
 
-    all_cols = cols + mapping_cols
+    all_cols = list(set(cols + mapping_cols))
 
-    cpa_file = input(
-        "Please provide the full path and file name to the CPA Tax Spreadsheet"
-    )
-    df = pd.read_csv(cpa_file, encoding="cp1252")[all_cols]
+    df = get_file()[all_cols]
     df = df[df[custodian_name] == "Charles Schwab & Co."]
 
     # Mapping data for financial account number to household number
