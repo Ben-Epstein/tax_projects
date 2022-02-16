@@ -52,9 +52,10 @@ def convert_and_copy():
     )
 
     must_be_pdf = True
-    all_files = [f"{file_loc}/{file}" for file in os.listdir(file_loc)]
-    print(f"Found {len(all_files)} in {file_loc}:", all_files)
-    all_files = [file for file in all_files if os.path.isfile(file)]
+    fnames = os.listdir(file_loc)
+    full_files = [f"{file_loc}/{file}" for file in fnames]
+    print(f"Found {len(full_files)} in {file_loc}:", full_files)
+    all_files = [fname for fname, file in zip(fnames, full_files) if os.path.isfile(file)]
     print(f"Validated {len(all_files)} remaining:", all_files)
 
     if must_be_pdf:
@@ -119,7 +120,7 @@ def convert_and_copy():
             for client_dir in all_clients:
                 if household_id in str(client_dir):
                     # This is the right client. Write the file
-                    input_file = PureWindowsPath(file)
+                    input_file = PureWindowsPath(file_loc) / file
                     output_file = PureWindowsPath(client_dir) / file_name
                     shutil.copyfile(input_file, output_file)
     except Exception as e:
