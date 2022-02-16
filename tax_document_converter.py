@@ -117,11 +117,13 @@ def convert_and_copy():
             cleaned_files.append(file_name)
 
             household_id = household_mapping[acct_number].lstrip(household_prefix)
+            print(f"Checking for household ID {household_id}")
             for client_dir in all_clients:
                 if household_id in str(client_dir):
                     # This is the right client. Write the file
                     input_file = PureWindowsPath(file_loc) / file
                     output_file = PureWindowsPath(client_dir) / file_name
+                    print(f"Copying file from {input_file} to {output_file}")
                     shutil.copyfile(input_file, output_file)
     except Exception as e:
         print(f"There was an issue proccesing the data: {e}")
