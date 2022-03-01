@@ -117,7 +117,8 @@ def convert_and_copy():
     
             household_id = household_mapping[acct_number]
             for client_dir in all_clients:
-                if str(household_id) in str(client_dir):
+                household_id_pth = f"_{household_id}\\"
+                if household_id_pth in str(client_dir):
                     # This is the right client. Write the file
                     input_file = PureWindowsPath(file_loc) / file
                     output_file = PureWindowsPath(client_dir) / file_name
