@@ -1,4 +1,4 @@
-# Tax File Name Converter
+# PDF CC Creator
 
 ## Description
 This python script created CC pdfs given a csv file containing the relevant account information and HH IDs.
