@@ -9,6 +9,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from typing import List, Union
 import pandas as pd
 import os
+from time import sleep
 
 
 CWD = PureWindowsPath(os.getcwd())
@@ -89,6 +90,7 @@ def process_households():
         file_path = PureWindowsPath(f"CWD") / results_path / file_name
         create_pdf(file_path, names)
 
-    print("Done. All PDF files have been placed in ")
+    print(f"Done. All PDF files have been placed in {file_path}. This window will close in 10 seconds")
+    sleep(10)
     
 process_households()
