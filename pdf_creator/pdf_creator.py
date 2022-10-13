@@ -16,7 +16,7 @@ CWD = PureWindowsPath(os.getcwd())
 def get_cc_df():
     cc_file = PureWindowsPath(
         input(
-            "Please provide the full path (including file name) to the CC details CSV"
+            "Please provide the full path (including file name) to the CC details CSV:\n"
         )
     )
     try:
@@ -90,3 +90,5 @@ def process_households():
         create_pdf(file_path, names)
 
     print("Done. All PDF files have been placed in ")
+    
+process_households()
