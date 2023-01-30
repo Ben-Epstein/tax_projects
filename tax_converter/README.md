@@ -8,7 +8,7 @@ directory (folder) location to the destination, as  provided by the prompts.
 ## Installing
 To use this script, you will need the following:
 1. Python >= 3.7. Download [here](https://www.python.org/downloads/)
-2. `pip` (pythons package manager). Run `py -m ensurepip --upgrade`
+2. `pip` (pythons package manager). Run `python -m ensurepip --upgrade`
 3. Supporting python packages:
    1. `pandas`
    2. `tqdm`
@@ -17,7 +17,7 @@ Install these by running `pip install -r tax_converter/requirements.txt`
 
 ## Running
 To run this script, double click on the python file, or, from the terminal, run:
-`py tax_converter/tax_document_converter.py`
+`python tax_converter/tax_document_converter.py`
 
 The program will prompt you for the following information:
 1. The input path to the tax PDF files
