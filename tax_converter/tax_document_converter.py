@@ -11,7 +11,7 @@ from pathlib import PureWindowsPath
 
 def get_file():
     cpa_file = PureWindowsPath(input(
-        "Please provide the full path and file name to the CPA Tax Spreadsheet"
+        "Please provide the full path and file name to the CPA Tax Spreadsheet: "
     ))
     try:
         df = pd.read_csv(cpa_file, encoding="cp1252")
@@ -37,18 +37,18 @@ def get_clients(output_loc, cur_year):
 
 def convert_and_copy():
     file_loc = PureWindowsPath(
-        input("Please provide the full path to the input files.")
+        input("Please provide the full path to the input files: ")
     )
     output_loc = PureWindowsPath(
         input(
             "Please provide the full path the final output folder. "
-            "All CPA folders should be here."
+            "All CPA folders should be here: "
         )
     )
     cur_year = input(
         "What year are we filing in? This number should match the year of the folder "
         "we are adding the files to "
-        "(For example, in year 2022 filing taxes for 2021, enter 2022)"
+        "(For example, in year 2022 filing taxes for 2021, enter 2022): "
     )
     
     print("-"*50)
@@ -56,7 +56,7 @@ def convert_and_copy():
     print("Output location:", output_loc)
     print("Current year filing:", cur_year)
     print("-"*50)
-    correct = input("Is this information correct? [Y]/n") or "Y"
+    correct = input("Is this information correct? [Y]/n ") or "Y"
     if correct.upper() != "Y":
         return convert_and_copy()
     
