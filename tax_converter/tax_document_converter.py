@@ -21,7 +21,7 @@ def get_file():
             "There was an issue opening the file. Let's try again. See error below",
         )
         print(e)
-        get_file()
+        return get_file()
        
         
 def get_clients(output_loc, cur_year):
