@@ -50,6 +50,16 @@ def convert_and_copy():
         "we are adding the files to "
         "(For example, in year 2022 filing taxes for 2021, enter 2022)"
     )
+    
+    print("-"*50)
+    print("Input location:", file_loc)
+    print("Output location:", output_loc)
+    print("Current year filing:", cur_year)
+    print("-"*50)
+    correct = input("Is this information correct? [Y]/n") or "Y"
+    if correct.upper() != "Y":
+        return convert_and_copy()
+    
 
     must_be_pdf = True
     fnames = os.listdir(file_loc)
@@ -131,7 +141,14 @@ def convert_and_copy():
 
     
 if __name__ == "__main__":
-    clean, failed = convert_and_copy()
+    try:
+        clean, failed = convert_and_copy()
+    except Exception as e:
+        print("There was an error running your process")
+        print(e)
+        print("This window will close in 20 seconds")
+        sleep(20)
+        raise e
     print(f"Done converting {len(clean)} files!")
     if failed:
         print(f"The following {len(failed)} files failed to be processed:")
