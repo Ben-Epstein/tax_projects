@@ -120,7 +120,9 @@ def convert_and_copy():
             redacted_acct_number = "X" * 4 + acct_number[4:]
     
             df_for_acct = df[df[acct_num_col] == acct_number]
-            client = df_for_acct[client_col].values[0]
+            # Somee clients have a "/" in their name, but windows thinks it's a new folder. 
+            # So we replace the "/" with "_" for the file name
+            client = df_for_acct[client_col].values[0].replace("/", "_")
     
             file_name = f"{client}_{redacted_acct_number}_{rest_of_file}"
     
