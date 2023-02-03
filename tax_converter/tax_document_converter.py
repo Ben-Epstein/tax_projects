@@ -72,18 +72,17 @@ def convert_and_copy():
         all_files = [file for file in all_files if file.endswith("pdf")]
 
     # Mapping data for account numbers to CPA data
-    cpa_cols = ["Tax Info Recipient 1: Full Name", "Tax Info Recipient 2: Full Name"]
-    client_col = "Account Name"
-    acct_num_col = "Financial Account Name"
-    custodian_name = "Custodian: Custodian Name"
-    household_id = "Source System ID"
+    cpa_cols = ["Tax Info Recipient 1", "Tax Info Recipient 2"]
+    client_col = "Household: Account Name"
+    acct_num_col = "Financial Account: Financial Account Name"
+    custodian_name = "Custodian"
+    household_id = "Household: Source System ID"
 
     cols = cpa_cols + [client_col, acct_num_col, custodian_name, household_id]
 
     # Mapping data for financial account number to household number
     account_to_household_key = acct_num_col
-    account_to_household_value = "Source System ID"
-    household_prefix = "Household-"
+    account_to_household_value = household_id
     mapping_cols = [account_to_household_key, account_to_household_value]
 
     all_cols = list(set(cols + mapping_cols))
