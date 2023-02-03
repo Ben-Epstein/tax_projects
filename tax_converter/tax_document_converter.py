@@ -128,6 +128,9 @@ def convert_and_copy():
     
             household_id = household_mapping[acct_number]
             for client_dir in all_clients:
+                # We add the backslash to the path to indicate the end of the household id
+                # ie household-104 does NOT end up matching household-1040 
+                # (because it will look like "household-104\" in the path
                 household_id_pth = f"_{household_id}\\"
                 if household_id_pth in str(client_dir):
                     # This is the right client. Write the file
