@@ -53,7 +53,7 @@ def _valid_detail(statement_detail: str) -> bool:
 
 def create_pdf(filename: Union[str, PureWindowsPath], names: List[str]) -> None:
     """Given a file name and list of full names, creates the 'cc' pdf"""
-    canvas = Canvas(filename, pagesize=LETTER)
+    canvas = Canvas(filename.as_posix(), pagesize=LETTER)
     canvas.setFont("Arial", 11)
     # Draw a string 1.5 inch left and 1.5 inch top
     canvas.drawString(LEFT_MARGIN, TOP_MARGIN, "cc:")
