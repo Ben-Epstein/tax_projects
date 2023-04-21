@@ -71,6 +71,7 @@ def process_households():
     print("Processing households")
     for hh_id in df["HH ID"].unique():
         if not _valid_detail(hh_id):
+            print(f"{hh_id} is not valid because it is nan")
             continue
         hh_df = df[df["HH ID"]==hh_id]
         # Full name for PDF is "Full Name" + "Statement CC Details"
@@ -92,5 +93,8 @@ def process_households():
 
     print(f"Done. All PDF files have been placed in {file_path}. This window will close in 10 seconds")
     sleep(10)
-    
-process_households()
+try:
+    process_households()
+except Exception as e:
+    print(f"There was an issue processing the PDF files. See error below:\n\n{str(e)}")
+    sleep(30)
