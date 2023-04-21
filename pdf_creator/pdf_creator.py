@@ -53,7 +53,7 @@ def _valid_detail(statement_detail: str) -> bool:
 
 def create_pdf(filename: Union[str, PureWindowsPath], names: List[str]) -> None:
     """Given a file name and list of full names, creates the 'cc' pdf"""
-    canvas = Canvas(filename.as_posix(), pagesize=LETTER)
+    canvas = Canvas(str(filename), pagesize=LETTER)
     canvas.setFont("Arial", 11)
     # Draw a string 1.5 inch left and 1.5 inch top
     canvas.drawString(LEFT_MARGIN, TOP_MARGIN, "cc:")
@@ -88,7 +88,7 @@ def process_households():
         hh_id_num = "_".join(hh_id.split("-")[2:])
         file_name = f"CC_HH_{hh_id_num}.pdf"
         results_path = "results"
-        file_path = PureWindowsPath(f"CWD") / results_path / file_name
+        file_path = CWD / results_path / file_name
         create_pdf(file_path, names)
 
     print(f"Done. All PDF files have been placed in {file_path}. This window will close in 10 seconds")
