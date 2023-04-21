@@ -33,10 +33,12 @@ def get_cc_df():
             "Let's try again. See error below",
         )
         print(e)
-        get_cc_df()
+        return get_cc_df()
 
 
 df = get_cc_df()
+print("Got Data")
+print(df[:5])
 
 LEFT_MARGIN = 1.5 * inch
 # drawString works from the left and bottom (instead of top), so we need to convert
@@ -96,5 +98,6 @@ def process_households():
 try:
     process_households()
 except Exception as e:
-    print(f"There was an issue processing the PDF files. See error below:\n\n{str(e)}")
+    import traceback
+    print(f"There was an issue processing the PDF files. See error below:\n\n{str(e)}\n\n{traceback.print_exc()}")
     sleep(30)
